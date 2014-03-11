@@ -1,0 +1,11 @@
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\Temp\bin\Debug\UnityEditor.dll
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\Temp\bin\Debug\UnityEngine.dll
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\Temp\bin\Debug\nunit.framework.dll
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\Temp\bin\Debug\Unity.DataContract.dll
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\obj\Debug\Assembly-CSharp.dll
+C:\Users\mtjarks\Documents\GitHub\ETMUnity\PutTheStuff\obj\Debug\Assembly-CSharp.pdb
