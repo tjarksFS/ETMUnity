@@ -5,14 +5,23 @@ public class PlayerController : MonoBehaviour
 {
 	public float speed;
     public GUIText countText;
+    public GUIText badCountText;
     public GUIText winText;
+    public GameObject finishLine;
+    public float finishLineSpeed;
     private int count;
-
+    private int badCount;
+    private bool gotToBox;
+    private bool moveFinishUp;
     void Start()
     {
         count = 0;
+        badCount = 0;
         SetCountText();
+        SetBadCountText();
         winText.text = "";
+        gotToBox = false;
+        moveFinishUp = false;
     }
 
 	void FixedUpdate() 
@@ -26,12 +35,19 @@ public class PlayerController : MonoBehaviour
 
 
 
-		moveHorizontal = Input.acceleration.y;
-		moveVertical = Input.acceleration.x;
+		moveVertical = Input.acceleration.y;
+		moveHorizontal = Input.acceleration.x;
 
-		movement = new Vector3 (moveVertical, 0.0f, moveHorizontal);
+
+		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 
 		rigidbody.AddForce (movement * speed * Time.deltaTime);
+        if (moveFinishUp)
+        {
+            finishLine.transform.Translate(new Vector3(0.0f, finishLineSpeed * Time.deltaTime, 0.0f));
+            if (finishLine.transform.position.y > 0)
+                moveFinishUp = false;
+        }
 	}
 	
 	void OnTriggerEnter(Collider other) 
@@ -42,14 +58,42 @@ public class PlayerController : MonoBehaviour
             count++;
             SetCountText();
 		}
+        else if (other.gameObject.tag == "BadPickUp")
+        {
+            other.gameObject.SetActive(false);
+            badCount++;
+            SetBadCountText();
+        }
 	}
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (gotToBox && other.collider.gameObject.tag == "SouthWall")
+        {
+            winText.text = "YOU WIN!\nScore: " + count;
+            moveFinishUp = true;
+        }
+        else if (other.collider.gameObject.tag == "Finish")
+        {
+            gotToBox = true;
+        }
+    }
 
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if (count >= 12)
+        if (count >= 32)
         {
-            winText.text = "YOU WIN!";
+            //winText.text = "YOU WIN!";
+        }
+    }
+
+    void SetBadCountText()
+    {
+        badCountText.text = "Reds Picked Up: " + badCount.ToString();
+        if (badCount >= 3)
+        {
+            winText.text = "YOU LOSE!";
         }
     }
 }
