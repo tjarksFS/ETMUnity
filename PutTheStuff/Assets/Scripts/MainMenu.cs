@@ -15,7 +15,9 @@ public class MainMenu : MonoBehaviour {
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(Screen.width / 2 - 50, Screen.height / 2, 100, 50), "Start Game"))
+        GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
+        gs.fontSize = 50;
+        if (GUI.Button(new Rect(Screen.width / 4, Screen.height / 2, Screen.width / 2, Screen.height / 4), "Start Game", gs))
         {
             Application.LoadLevel("Game");
         }

@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     private int badCount;
     private bool gotToBox;
     private bool moveFinishUp;
+    private Vector3 baselineAcceleration;
+
+
     void Start()
     {
         count = 0;
@@ -22,6 +25,11 @@ public class PlayerController : MonoBehaviour
         winText.text = "";
         gotToBox = false;
         moveFinishUp = false;
+        baselineAcceleration = Input.acceleration;
+        baselineAcceleration.z = baselineAcceleration.y;
+        baselineAcceleration.y = 0.0f;
+        if (baselineAcceleration.sqrMagnitude > 1)
+            baselineAcceleration.Normalize();
     }
 
 	void FixedUpdate() 
@@ -41,7 +49,13 @@ public class PlayerController : MonoBehaviour
 
 		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 
-		rigidbody.AddForce (movement * speed * Time.deltaTime);
+        if (movement.sqrMagnitude > 1)
+            movement.Normalize();
+
+        movement -= baselineAcceleration;
+
+		rigidbody.AddForce (movement * speed * 2 * Time.deltaTime);
+       
         if (moveFinishUp)
         {
             finishLine.transform.Translate(new Vector3(0.0f, finishLineSpeed * Time.deltaTime, 0.0f));
