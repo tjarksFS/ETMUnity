@@ -3,9 +3,11 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour {
 
+	public GUIText directions;
+
 	// Use this for initialization
 	void Start () {
-	
+		directions.text = "Collect the Gold cubes\nCross the finish line to win\n\nAvoid the Red cubes\n3 strikes, you're out!";	
 	}
 	
 	// Update is called once per frame
@@ -17,9 +19,11 @@ public class MainMenu : MonoBehaviour {
     {
         GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
         gs.fontSize = 50;
-        if (GUI.Button(new Rect(Screen.width / 4, Screen.height / 2, Screen.width / 2, Screen.height / 4), "Start Game", gs))
+        if (GUI.Button(new Rect(Screen.width / 2 - 300, Screen.height / 2, 600, 200), "Start Game", gs))
         {
             Application.LoadLevel("Game");
         }
+
+
     }
 }

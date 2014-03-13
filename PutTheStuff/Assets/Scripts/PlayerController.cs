@@ -13,7 +13,10 @@ public class PlayerController : MonoBehaviour
     private int badCount;
     private bool gotToBox;
     private bool moveFinishUp;
-    private Vector3 baselineAcceleration;
+	private bool hasLost;
+	private bool hasWon;
+	public GUITexture [] checks;
+	public Texture filledCheck;
 
 
     void Start()
@@ -25,11 +28,8 @@ public class PlayerController : MonoBehaviour
         winText.text = "";
         gotToBox = false;
         moveFinishUp = false;
-        baselineAcceleration = Input.acceleration;
-        baselineAcceleration.z = baselineAcceleration.y;
-        baselineAcceleration.y = 0.0f;
-        if (baselineAcceleration.sqrMagnitude > 1)
-            baselineAcceleration.Normalize();
+		hasLost = false;
+		hasWon = false;
     }
 
 	void FixedUpdate() 
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
         if (movement.sqrMagnitude > 1)
             movement.Normalize();
 
-        movement -= baselineAcceleration;
+        
 
 		rigidbody.AddForce (movement * speed * 2 * Time.deltaTime);
        
@@ -62,6 +62,9 @@ public class PlayerController : MonoBehaviour
             if (finishLine.transform.position.y > 0)
                 moveFinishUp = false;
         }
+
+		//if (Input.acceleration.sqrMagnitude > 2.25)
+		//	rigidbody.AddForce (new Vector3 (0.0f, 1000, 0.0f));
 	}
 	
 	void OnTriggerEnter(Collider other) 
@@ -75,6 +78,8 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.tag == "BadPickUp")
         {
             other.gameObject.SetActive(false);
+			if (badCount < 3)
+				checks[badCount].texture = filledCheck;
             badCount++;
             SetBadCountText();
         }
@@ -82,10 +87,11 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (gotToBox && other.collider.gameObject.tag == "SouthWall")
+        if (!hasLost && gotToBox && other.collider.gameObject.tag == "SouthWall")
         {
             winText.text = "YOU WIN!\nScore: " + count;
             moveFinishUp = true;
+			hasWon = true;
         }
         else if (other.collider.gameObject.tag == "Finish")
         {
@@ -96,10 +102,6 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if (count >= 32)
-        {
-            //winText.text = "YOU WIN!";
-        }
     }
 
     void SetBadCountText()
@@ -108,6 +110,22 @@ public class PlayerController : MonoBehaviour
         if (badCount >= 3)
         {
             winText.text = "YOU LOSE!";
+			moveFinishUp = true;
+			hasLost = true;
         }
     }
+	
+	private void OnGUI()
+	{
+		GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
+		gs.fontSize = 50;
+		if ((hasWon || hasLost) && GUI.Button(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 100, 600, 200), "Reset", gs))
+		{
+			Application.LoadLevel("Game");
+		}
+
+//		for (int i = 0; i < (badCount < 3 ? badCount : 3); i++) {
+//			checks[i].texture = filledCheck;
+//		}
+	}
 }

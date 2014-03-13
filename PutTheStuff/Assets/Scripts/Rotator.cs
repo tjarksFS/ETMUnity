@@ -7,6 +7,9 @@ public class Rotator : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		transform.Rotate(new Vector3(15, 30, 45) * Time.deltaTime);
+		if (tag == "PickUp")
+			transform.Rotate(new Vector3(25, 50, 75) * Time.deltaTime);
+		else
+			transform.Rotate(new Vector3(-25, -50, -75) * Time.deltaTime);
 	}
 }
