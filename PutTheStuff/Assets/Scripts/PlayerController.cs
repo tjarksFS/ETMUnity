@@ -5,7 +5,6 @@ public class PlayerController : MonoBehaviour
 {
 	public float speed;
     public GUIText countText;
-    public GUIText badCountText;
     public GUIText winText;
     public GameObject finishLine;
     public float finishLineSpeed;
@@ -78,7 +77,7 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.tag == "BadPickUp")
         {
             other.gameObject.SetActive(false);
-			if (badCount < 3)
+            if (badCount < checks.Length)
 				checks[badCount].texture = filledCheck;
             badCount++;
             SetBadCountText();
@@ -106,8 +105,7 @@ public class PlayerController : MonoBehaviour
 
     void SetBadCountText()
     {
-        badCountText.text = "Reds Picked Up: " + badCount.ToString();
-        if (badCount >= 3)
+        if (badCount >= checks.Length)
         {
             winText.text = "YOU LOSE!";
 			moveFinishUp = true;
@@ -119,11 +117,24 @@ public class PlayerController : MonoBehaviour
 	{
 		GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
 		gs.fontSize = 50;
-		if ((hasWon || hasLost) && GUI.Button(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 100, 600, 200), "Reset", gs))
-		{
-			Application.LoadLevel("Game");
-		}
 
+        bool resolutionWide = Screen.currentResolution.width > Screen.currentResolution.height ? true : false;
+
+        if ((hasWon || hasLost))
+        {
+            if (GUI.Button(new Rect(Screen.width / 2 - ((!resolutionWide || hasLost) ? 250 : 525), Screen.height / 2 + 100, 500, 150), "Reset", gs))
+            {
+                Application.LoadLevel("Game");
+            }
+        }
+
+        if (hasWon)
+        {
+            if (GUI.Button(new Rect(Screen.width / 2 - (!resolutionWide ? 250 : -25), Screen.height / 2 + (!resolutionWide ? 300 : 100), 500, 150), "Next Level", gs))
+            {
+                Application.LoadLevel("ProjectileGame");
+            }
+        }
 //		for (int i = 0; i < (badCount < 3 ? badCount : 3); i++) {
 //			checks[i].texture = filledCheck;
 //		}

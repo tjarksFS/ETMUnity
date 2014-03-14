@@ -5,6 +5,7 @@ public class TargetController : MonoBehaviour {
 
     private bool left;
     public float speed;
+   
 
 	// Use this for initialization
 	void Start () {
@@ -26,4 +27,6 @@ public class TargetController : MonoBehaviour {
                 left = true;
         }
 	}
+
+
 }
