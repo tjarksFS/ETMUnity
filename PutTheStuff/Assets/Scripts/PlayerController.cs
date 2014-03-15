@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
         {
             if (GUI.Button(new Rect(Screen.width / 2 - ((!resolutionWide || hasLost) ? 250 : 525), Screen.height / 2 + 100, 500, 150), "Reset", gs))
             {
-                Application.LoadLevel("Game");
+                Application.LoadLevel("MainScene");
             }
         }
 

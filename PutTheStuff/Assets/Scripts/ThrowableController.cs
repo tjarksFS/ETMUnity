@@ -89,7 +89,7 @@ public class ThrowableController : MonoBehaviour {
         {
             if (GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 + 100, 500, 150), "New Game", gs))
             {
-                Application.LoadLevel("Game");
+                Application.LoadLevel("MainScene");
             }
         }
     }
