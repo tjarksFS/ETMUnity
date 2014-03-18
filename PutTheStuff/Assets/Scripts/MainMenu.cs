@@ -19,9 +19,13 @@ public class MainMenu : MonoBehaviour {
     {
         GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
         gs.fontSize = 50;
-        if (GUI.Button(new Rect(Screen.width / 2 - 300, Screen.height / 2, 600, 200), "Start Game", gs))
+        if (GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2, 500, 150), "Start Game", gs))
         {
             Application.LoadLevel("Game");
+        }
+        if (GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 + 200, 500, 150), "Lobby", gs))
+        {
+            Application.LoadLevel("Lobby");
         }
 
 

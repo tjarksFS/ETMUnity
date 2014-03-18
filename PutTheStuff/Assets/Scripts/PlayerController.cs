@@ -33,35 +33,37 @@ public class PlayerController : MonoBehaviour
 
 	void FixedUpdate() 
 	{
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
-
-		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-
-		rigidbody.AddForce(movement * speed * Time.deltaTime);
-
-
-
-		moveVertical = Input.acceleration.y;
-		moveHorizontal = Input.acceleration.x;
-
-
-		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-
-        if (movement.sqrMagnitude > 1)
-            movement.Normalize();
-
-        
-
-		rigidbody.AddForce (movement * speed * 2 * Time.deltaTime);
-       
-        if (moveFinishUp)
+        if (networkView.isMine)
         {
-            finishLine.transform.Translate(new Vector3(0.0f, finishLineSpeed * Time.deltaTime, 0.0f));
-            if (finishLine.transform.position.y > 0)
-                moveFinishUp = false;
-        }
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
 
+            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+
+            rigidbody.AddForce(movement * speed * Time.deltaTime);
+
+
+
+            moveVertical = Input.acceleration.y;
+            moveHorizontal = Input.acceleration.x;
+
+
+            movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+
+            if (movement.sqrMagnitude > 1)
+                movement.Normalize();
+
+
+
+            rigidbody.AddForce(movement * speed * 2 * Time.deltaTime);
+
+            if (moveFinishUp)
+            {
+                finishLine.transform.Translate(new Vector3(0.0f, finishLineSpeed * Time.deltaTime, 0.0f));
+                if (finishLine.transform.position.y > 0)
+                    moveFinishUp = false;
+            }
+        }
 		//if (Input.acceleration.sqrMagnitude > 2.25)
 		//	rigidbody.AddForce (new Vector3 (0.0f, 1000, 0.0f));
 	}
