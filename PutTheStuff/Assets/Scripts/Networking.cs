@@ -3,14 +3,10 @@ using System.Collections;
 
 public class Networking : MonoBehaviour {
 
-    private bool serverStarted;
-    private bool clientConnected;
-    public GUIText ipText;
-
+    public GameObject playerPrefab;
 	// Use this for initialization
 	void Start () {
-        serverStarted = false;
-        clientConnected = false;
+
         Application.runInBackground = true;
 	}
 	
@@ -23,37 +19,33 @@ public class Networking : MonoBehaviour {
     {
         GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
         gs.fontSize = 50;
-        if (!Network.isClient && !serverStarted && !clientConnected && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2, 500, 150), "Start Server", gs))
+        if (!Network.isClient && !Network.isServer && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2, 500, 150), "Start Server", gs))
         {
-            Network.InitializeServer(3, 172, true);//!Network.HavePublicAddress());
-            MasterServer.RegisterHost("GameName", "RoomName");
+            Network.InitializeServer(1, 20000, true);//!Network.HavePublicAddress());
+            MasterServer.RegisterHost("MyGame", "RoomName");
         }
-        if (!serverStarted && !clientConnected && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 - 200, 500, 150), "Refresh Hosts", gs))
+        if (!Network.isServer && !Network.isClient && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 - 200, 500, 150), "Refresh Hosts", gs))
         {
             RefreshHostList();
         }
-                        
-        if (hostList != null) 
+
+        if (hostList != null)
         {
             for (int i = 0; i < hostList.Length; i++)
             {
-                if (!serverStarted && !clientConnected && GUI.Button(new Rect(Screen.width / 2 - 250 + (200*i), Screen.height / 2 + 200, 150, 150), "Join Game", gs))
+                if (!Network.isServer && !Network.isClient && GUI.Button(new Rect(Screen.width / 2 - 250 + (200 * i), Screen.height / 2 + 200, 150, 150), "Join Game", gs))
                 {
                     JoinServer(hostList[i]);
                 }
             }
-        }
-        if (serverStarted)
-        {
-            ipText.text = Network.player.ipAddress + " " + Network.player.externalIP;
         }
 
     }
 
     void OnServerInitialized()
     {
-        serverStarted = true;
-        Application.LoadLevel("Game");
+        Network.Instantiate(playerPrefab, new Vector3(-1.0f, 0.5f, -7.0f), Quaternion.identity, 0);
+        //Application.LoadLevel("Game");
     }
 
     //void OnConnectedToServer()
@@ -66,7 +58,7 @@ public class Networking : MonoBehaviour {
 
     private void RefreshHostList()
     {
-        MasterServer.RequestHostList("GameName");
+        MasterServer.RequestHostList("MyGame");
     }
 
     void OnMasterServerEvent(MasterServerEvent msEvent)
@@ -82,8 +74,7 @@ public class Networking : MonoBehaviour {
 
     void OnConnectedToServer()
     {
-        clientConnected = true;
-        ipText.text = "Connected";
-        Application.LoadLevel("Game");
+        Network.Instantiate(playerPrefab, new Vector3(1.0f, 0.5f, -7.0f), Quaternion.identity, 0);
+        //Application.LoadLevel("Game");
     }
 }

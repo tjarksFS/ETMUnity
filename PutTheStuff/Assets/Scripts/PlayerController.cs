@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        //DontDestroyOnLoad(this);
         count = 0;
         badCount = 0;
         SetCountText();
@@ -33,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
 	void FixedUpdate() 
 	{
-        if (networkView.isMine)
+        //if (networkView.isMine)
         {
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
