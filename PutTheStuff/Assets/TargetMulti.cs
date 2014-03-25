@@ -34,7 +34,6 @@ public class TargetMulti : MonoBehaviour {
     void OnCollisionEnter(Collision other)
     {
         NetworkView nv = other.gameObject.GetComponent("NetworkView") as NetworkView;
-
         targetParticles.Emit(500);
         if (nv.networkView.isMine)
         {
@@ -44,6 +43,7 @@ public class TargetMulti : MonoBehaviour {
         {
             winText.text = "You Lose";
         }
+
     }
 }
 

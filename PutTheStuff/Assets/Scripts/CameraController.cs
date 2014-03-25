@@ -25,6 +25,8 @@ public class CameraController : MonoBehaviour {
                 break;
             }
         }
+
+
     }
 	// Update is called once per frame
 	void LateUpdate () {
@@ -39,6 +41,12 @@ public class CameraController : MonoBehaviour {
                 transform.Rotate((percent - lastPercent) * -50, 0, 0);
                 lastPercent = percent;
                 //transform.rotation = new Quaternion(50 * percent + 20, 0, 0, 0);
+            }
+
+            if (player.transform.position.y < -4)
+            {
+                transform.Rotate(lastPercent * 50, 0, 0);
+                lastPercent = 0;
             }
         }
 	}

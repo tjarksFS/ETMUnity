@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 	private bool hasWon;
 	public GUITexture [] checks;
 	public Texture filledCheck;
-
+    
 
     void Start()
     {

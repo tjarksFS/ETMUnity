@@ -44,7 +44,7 @@ public class Networking : MonoBehaviour {
 
     void OnServerInitialized()
     {
-        Network.Instantiate(playerPrefab, new Vector3(-1.0f, 0.5f, -7.0f), Quaternion.identity, 0);
+        Network.Instantiate(playerPrefab, new Vector3(-1.0f, 0.5f, -9.0f), Quaternion.identity, 0);
         //Application.LoadLevel("Game");
     }
 
@@ -74,7 +74,7 @@ public class Networking : MonoBehaviour {
 
     void OnConnectedToServer()
     {
-        Network.Instantiate(playerPrefab, new Vector3(1.0f, 0.5f, -7.0f), Quaternion.identity, 0);
+        Network.Instantiate(playerPrefab, new Vector3(1.0f, 0.5f, -9.0f), Quaternion.identity, 0);
         //Application.LoadLevel("Game");
     }
 }

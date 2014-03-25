@@ -4,15 +4,22 @@ using System.Collections;
 public class MultiPlayer : MonoBehaviour
 {
     public float speed;
+    private Vector3 startPos;
+    private GUIText winText;
+
     void Start()
     {
         //DontDestroyOnLoad(this);
+        startPos = rigidbody.position;
+        winText = Object.FindObjectOfType(typeof(GUIText)) as GUIText;
     }
 
     void FixedUpdate()
     {
         if (networkView.isMine)
         {
+            if (winText.text != "")
+                gameObject.SetActive(false);
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
 
@@ -34,6 +41,12 @@ public class MultiPlayer : MonoBehaviour
 
 
             rigidbody.AddForce(movement * speed * 2 * Time.deltaTime);
+
+            if (transform.position.y < -5)
+            {
+                rigidbody.position = startPos;
+                rigidbody.velocity = Vector3.zero;
+            }
 
         //    if (moveFinishUp)
         //    {
@@ -102,8 +115,8 @@ public class MultiPlayer : MonoBehaviour
 
     private void OnGUI()
     {
-        //GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
-        //gs.fontSize = 50;
+        GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
+        gs.fontSize = 50;
 
         //bool resolutionWide = Screen.currentResolution.width > Screen.currentResolution.height ? true : false;
 
@@ -115,15 +128,13 @@ public class MultiPlayer : MonoBehaviour
         //    }
         //}
 
-        //if (hasWon)
-        //{
-        //    if (GUI.Button(new Rect(Screen.width / 2 - (!resolutionWide ? 250 : -25), Screen.height / 2 + (!resolutionWide ? 300 : 100), 500, 150), "Next Level", gs))
-        //    {
-        //        Application.LoadLevel("ProjectileGame");
-        //    }
-        //}
-        //		for (int i = 0; i < (badCount < 3 ? badCount : 3); i++) {
-        //			checks[i].texture = filledCheck;
-        //		}
+        if (winText.text != "")
+        {
+            if (GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 + 100, 500, 150), "Reset", gs))
+            {
+                Application.LoadLevel("MainScene");
+            }
+        }
+
     }
 }
