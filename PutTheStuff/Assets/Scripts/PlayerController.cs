@@ -16,9 +16,16 @@ public class PlayerController : MonoBehaviour
 	private bool hasWon;
 	public GUITexture [] checks;
 	public Texture filledCheck;
-    
+    public Texture emptyCheck;
+    public GUIText longitudeText;
+    public GUIText latitudeText;
+    private float lastLong;
+    private float lastLat;
+    private float distanceTravelled;
+    private float earthRadius;
+    public GUIText distanceText;
 
-    void Start()
+    IEnumerator Start()
     {
         //DontDestroyOnLoad(this);
         count = 0;
@@ -30,6 +37,40 @@ public class PlayerController : MonoBehaviour
         moveFinishUp = false;
 		hasLost = false;
 		hasWon = false;
+        Input.location.Start();
+        int maxWait = 20;
+        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+        {
+            yield return new WaitForSeconds(1);
+            maxWait--;
+        }
+        lastLong = Input.location.lastData.longitude;
+        lastLat = Input.location.lastData.latitude;
+        distanceTravelled = 0.0f;
+        earthRadius = 3958.761f;
+    }
+
+    void Update()
+    {
+        float meanLat = (lastLat + Input.location.lastData.latitude) / 2;
+        distanceTravelled += earthRadius * Mathf.Sqrt(Mathf.Pow((lastLong - Input.location.lastData.longitude)*Mathf.PI/180, 2) + Mathf.Pow(Mathf.Cos(Mathf.PI/180*meanLat)*((lastLat - Input.location.lastData.latitude)*Mathf.PI/180), 2));
+        longitudeText.text = Input.location.lastData.longitude.ToString();
+        latitudeText.text = Input.location.lastData.latitude.ToString();
+        distanceText.text = distanceTravelled.ToString();
+
+        lastLong = Input.location.lastData.longitude;
+        lastLat = Input.location.lastData.latitude;
+        if (distanceTravelled > 0.05)
+        {
+            if (badCount > 0)
+            {
+                checks[badCount - 1].texture = emptyCheck;
+                badCount--;
+                SetBadCountText();
+            }
+            distanceTravelled = 0.0f;
+        }
+
     }
 
 	void FixedUpdate() 

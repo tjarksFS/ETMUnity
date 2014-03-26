@@ -4,10 +4,12 @@ using System.Collections;
 public class Networking : MonoBehaviour {
 
     public GameObject playerPrefab;
+    private bool joinedGame;
 	// Use this for initialization
 	void Start () {
 
         Application.runInBackground = true;
+        joinedGame = false;
 	}
 	
 	// Update is called once per frame
@@ -19,21 +21,25 @@ public class Networking : MonoBehaviour {
     {
         GUIStyle gs = new GUIStyle(GUI.skin.GetStyle("Button"));
         gs.fontSize = 50;
-        if (!Network.isClient && !Network.isServer && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2, 500, 150), "Start Server", gs))
+        if (!joinedGame && !Network.isClient && !Network.isServer && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 - 75, 500, 150), "Start Server", gs))
         {
             Network.InitializeServer(1, 20000, true);//!Network.HavePublicAddress());
             MasterServer.RegisterHost("MyGame", "RoomName");
         }
-        if (!Network.isServer && !Network.isClient && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 - 200, 500, 150), "Refresh Hosts", gs))
+        if (!joinedGame && !Network.isServer && !Network.isClient && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 - 275, 500, 150), "Refresh Hosts", gs))
         {
             RefreshHostList();
         }
+        if (joinedGame && !Network.isServer && !Network.isClient && GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2 - 75, 500, 150), "Reset", gs))
+        {
+            Application.LoadLevel("MainScene");
+        }
 
-        if (hostList != null)
+        if (!joinedGame && hostList != null)
         {
             for (int i = 0; i < hostList.Length; i++)
             {
-                if (!Network.isServer && !Network.isClient && GUI.Button(new Rect(Screen.width / 2 - 250 + (200 * i), Screen.height / 2 + 200, 150, 150), "Join Game", gs))
+                if (!Network.isServer && !Network.isClient && GUI.Button(new Rect(Screen.width / 2 - 250 + (200 * i), Screen.height / 2 + 125, 125, 150), (i+1).ToString(), gs))
                 {
                     JoinServer(hostList[i]);
                 }
@@ -45,6 +51,7 @@ public class Networking : MonoBehaviour {
     void OnServerInitialized()
     {
         Network.Instantiate(playerPrefab, new Vector3(-1.0f, 0.5f, -9.0f), Quaternion.identity, 0);
+        joinedGame = true;
         //Application.LoadLevel("Game");
     }
 
@@ -75,6 +82,7 @@ public class Networking : MonoBehaviour {
     void OnConnectedToServer()
     {
         Network.Instantiate(playerPrefab, new Vector3(1.0f, 0.5f, -9.0f), Quaternion.identity, 0);
+        joinedGame = true;
         //Application.LoadLevel("Game");
     }
 }
