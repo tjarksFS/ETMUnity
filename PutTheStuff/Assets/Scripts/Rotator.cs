@@ -4,6 +4,17 @@ using System.Collections;
 public class Rotator : MonoBehaviour 
 {
 
+    void Start()
+    {
+        if (tag != "PickUp")
+        {
+            if (WebcamScript.picture != null)
+            {
+                renderer.material.mainTexture = WebcamScript.picture;
+
+            }
+        }
+    }
 	// Update is called once per frame
 	void Update ()
 	{

@@ -23,6 +23,11 @@ public class MainMenu : MonoBehaviour {
         {
             Application.LoadLevel("Game");
         }
+        if (GUI.Button(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 250, 600, 200), "Take Picture", gs))
+        {
+            Application.LoadLevel("CameraScene");
+        }
+
 
 
     }
